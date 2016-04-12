@@ -1,5 +1,5 @@
 # Jumping in
-With our trusty `ls -al` we find an executable binary named `check in our 
+With our trusty `ls -al` we find an executable binary named `check` in our 
 home directory. I see that this binary is owned by `leviathan2`, which is
 the user I want to login as next. The binary will execute with the
 permissions of `leviathan2` which will be perfect for reading the password
@@ -28,6 +28,7 @@ then a hex address prompt. I then use `pd` to print the disassembly.
 
 ## Relevant portion of disassembly
 ---------------
+```asm
     0x0804852d    55             push ebp                                       
     0x0804852e    89e5           mov ebp, esp                                 
     0x08048530    83e4f0         and esp, 0xfffffff0                          
@@ -67,17 +68,18 @@ then a hex address prompt. I then use `pd` to print the disassembly.
     0x080485d6    8b54242c       mov edx, dword [esp + 0x2c]   ; [0x2c:4]=0x28
     0x080485da    653315140000.  xor edx, dword gs:[0x14]                     
 ,=< 0x080485e1    7405           je 0x80485e8                  ;[9]
-
+```
 
 
 looking at the assembly, we piece together the inital buffer
 
-
+```
 esp+: 18|19|1a|1b|1c|1d|1e|1f|20|21|22|23|24|25|26|27|28|29|2a|2b
 
 raw:  00|78|65|74|00|64|6f|67|65|76|6f|6c|00|72|63|65|73|74|65|00
-text: \0  x  e  s \0  d  o  g  e  v  o  l \0  r  c  e  s  t  e
 
+text: \0  x  e  s \0  d  o  g  e  v  o  l \0  r  c  e  s  t  e \0
+```
 we then see where printf is called with the password prompt
 and see that right after that getch is called 3 times. The 3 bytes
 of input are written into a buffer starting at [esp+14] and then null
@@ -86,6 +88,6 @@ of input are written into a buffer starting at [esp+14] and then null
 just translated into ASCII, we see that the `check` program password
  is `sex`. Entering this password gives us a shell `/bin/sh` which we
 also saw from the disassembly. Once I have a shell I look for the password
-in the `/etc/leviathan_pass/` directory. I see a leviathan2, and I cat
+in the `/etc/leviathan_pass/` directory where I see a `leviathan2` file. I cat
 that `cat /etc/leviathan_pass/leviathan2` and see the password is `ougahZi8Ta`
 
