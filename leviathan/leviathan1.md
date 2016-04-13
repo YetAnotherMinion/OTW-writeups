@@ -24,7 +24,9 @@ ends up not mattering.
 I then choose to disassemble the binary using `radare2` because I am
 not familiar with this tool, and now is as good time as any to start learning.
 I run `$ radare2 check` and get a prompt telling me "Welcome to IDA 10.0" and
-then a hex address prompt. I then use `pd` to print the disassembly. 
+then a hex address prompt. I first enter visual mode by entering `V` at the command line
+which allows me to navigate around a raw hex view of the program in memory. Pressing
+`d` at this point shows me the disassembly instead to navigate around.
 
 ## Relevant portion of disassembly
 ---------------
